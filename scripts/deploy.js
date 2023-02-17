@@ -1,24 +1,28 @@
 const { ethers } = require("hardhat");
 
 const main = async () => {
-  const [owner, randomPerson] = await hre.ethers.getSigners();
-  const WavePortal = await hre.ethers.getContractFactory("WavePortal");
-  const wavePortal = await WavePortal.deploy();
+  console.log(await ethers.Wallet.fromMnemonic());
+  const [deployer, randomPerson] = await ethers.getSigners();
+  const accountBalance = await deployer.getBalance();
 
+  console.log(`Account balance: ${accountBalance.toString()}`);
+
+  const WavePortal = await ethers.getContractFactory("WavePortal");
+  const wavePortal = await WavePortal.deploy();
   await wavePortal.deployed();
 
   console.log(`Contract deployed to ${wavePortal.address}`);
-  console.log(`Contract deployed by ${owner.address}`);
+  console.log(`Contract deployed by ${deployer.address}`);
 
   await wavePortal.getTotalWaves();
 
-  const waveMe = await wavePortal.wave();
-  await waveMe.wait();
+  // const waveMe = await wavePortal.wave();
+  // await waveMe.wait();
 
-  await wavePortal.getTotalWaves();
+  // await wavePortal.getTotalWaves();
 
-  const secondWaveMe = await wavePortal.connect(randomPerson).wave();
-  await secondWaveMe.wait();
+  // const secondWaveMe = await wavePortal.connect(randomPerson).wave();
+  // await secondWaveMe.wait();
 };
 
 // const runMain = async () => {
