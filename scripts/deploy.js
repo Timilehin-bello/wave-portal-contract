@@ -1,8 +1,7 @@
 const { ethers } = require("hardhat");
 
 const main = async () => {
-  console.log(await ethers.Wallet.fromMnemonic());
-  const [deployer, randomPerson] = await ethers.getSigners();
+  const [deployer] = await ethers.getSigners();
   const accountBalance = await deployer.getBalance();
 
   console.log(`Account balance: ${accountBalance.toString()}`);
