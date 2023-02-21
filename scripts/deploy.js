@@ -1,27 +1,24 @@
 const { ethers } = require("hardhat");
 
 const main = async () => {
-  const [deployer] = await ethers.getSigners();
-  const accountBalance = await deployer.getBalance();
+  const waveContractFactory = await ethers.getContractFactory("WavePortal");
+  const waveContract = await waveContractFactory.deploy();
+  await waveContract.deployed();
+  console.log("Contract Waver1:", waveContract.address);
 
-  console.log(`Account balance: ${accountBalance.toString()}`);
+  let waveCount;
+  waveCount = await waveContract.getTotalWaves();
+  console.log(waveCount.toNumber());
 
-  const WavePortal = await ethers.getContractFactory("WavePortal");
-  const wavePortal = await WavePortal.deploy();
-  await wavePortal.deployed();
+  let waveTxn = await waveContract.wave("A message!");
+  await waveTxn.wait(); // Wait for the transaction to be mined
 
-  console.log(`Contract deployed to ${wavePortal.address}`);
-  console.log(`Contract deployed by ${deployer.address}`);
+  const [_, randomPerson] = await hre.ethers.getSigners();
+  waveTxn = await waveContract.connect(randomPerson).wave("Another message!");
+  await waveTxn.wait(); // Wait for the transaction to be mined
 
-  await wavePortal.getTotalWaves();
-
-  // const waveMe = await wavePortal.wave();
-  // await waveMe.wait();
-
-  // await wavePortal.getTotalWaves();
-
-  // const secondWaveMe = await wavePortal.connect(randomPerson).wave();
-  // await secondWaveMe.wait();
+  let allWaves = await waveContract.getAllWaves();
+  console.log(allWaves);
 };
 
 // const runMain = async () => {
