@@ -1,10 +1,15 @@
-const { ethers } = require("hardhat");
-
 const main = async () => {
-  const waveContractFactory = await ethers.getContractFactory("WavePortal");
+  const [deployer] = await ethers.getSigners();
+  const accountBalance = await deployer.getBalance();
+
+  console.log(`Account balance: ${accountBalance.toString()}`);
+
+  const waveContractFactory = await hre.ethers.getContractFactory("WavePortal");
   const waveContract = await waveContractFactory.deploy();
   await waveContract.deployed();
-  console.log("Contract Waver1:", waveContract.address);
+
+  console.log(`Contract deployed to ${waveContract.address}`);
+  console.log(`Contract deployed by ${deployer.address}`);
 
   let waveCount;
   waveCount = await waveContract.getTotalWaves();

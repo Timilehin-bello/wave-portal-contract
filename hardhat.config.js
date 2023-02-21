@@ -1,6 +1,6 @@
 require("@nomicfoundation/hardhat-toolbox");
 require("dotenv").config();
-
+const privateKeys = process.env.PRIVATE_KEYS || "";
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
 task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
@@ -18,8 +18,8 @@ module.exports = {
   networks: {
     localhost: {},
     goerli: {
-      url: process.env.QUICKNODE_API_URL,
-      accounts: [process.env.PRIVATE_KEY],
+      url: `https://wider-flashy-uranium.ethereum-goerli.discover.quiknode.pro/${process.env.API_KEY}`,
+      accounts: privateKeys.split(","),
     },
   },
 };
